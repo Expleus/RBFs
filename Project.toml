@@ -1,4 +1,4 @@
-name = "RBFs"
+name = "RadialBasisFunctions"
 uuid = "9de28636-5028-44ac-b23d-27f9d7b5f036"
 authors = ["EIA-FTA"]
 version = "0.1.0"
