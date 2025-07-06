@@ -2,7 +2,7 @@ module RadialBasisFunctions
 
 using LinearAlgebra
 
-export RBF, TPS, TPSo2, Gaussiana, ∇², dr, drr
+export RBF, TPS, TPSo2, Gaussiana, ∇², dX, dr, drr
 
 abstract type RBF end
 
