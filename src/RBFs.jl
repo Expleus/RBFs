@@ -51,5 +51,25 @@ function drr(g::Gaussiana, ξ::Vector{<:Number})
     r = norm(ξ)
     return (1 - 2 * (g.ε * r)^2) * dr(g, ξ) / r
 end
+git add .
+struct TPSo2 <: RBF
+    LaplacianLimit::Float64
+    TPS() = new(0)
+end
+
+function (t::TPSo2)(ξ::Vector{<:Number})
+    r = norm(ξ)
+    return r == 0.0 ? 0.0 : r^4 * log(r)
+end
+
+function dr(t::TPSo2, ξ::Vector{<:Number})
+    r = norm(ξ)
+    return r == 0.0 ? 0.0 : r^3*(4*log(r)+1)
+end
+
+function drr(t::TPS, ξ::Vector{<:Number})
+    r = norm(ξ)
+    return r == 0.0 ? 0.0 : r^2*(12*log(r)+7)
+end
 
 end # module
