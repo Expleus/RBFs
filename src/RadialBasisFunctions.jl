@@ -60,7 +60,7 @@ end
 
 struct TPSo2 <: RBF
     LaplacianLimit::Float64
-    TPS() = new(0)
+    TPSo2() = new(0)
 end
 
 function (t::TPSo2)(ξ::Vector{<:Number})
