@@ -1,4 +1,4 @@
-module RBFs
+module RadialBasisFunctions
 
 using LinearAlgebra
 
