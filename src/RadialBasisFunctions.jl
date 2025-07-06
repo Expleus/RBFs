@@ -2,13 +2,19 @@ module RadialBasisFunctions
 
 using LinearAlgebra
 
-export RBF, TPS, Gaussiana, ∇², dr, drr
+export RBF, TPS, TPSo2, Gaussiana, ∇², dr, drr
 
 abstract type RBF end
 
 function ∇²(f::RBF, ξ::Vector{<:Number})
     r = norm(ξ)
     return r == 0 ? f.LaplacianLimit : drr(f, ξ) + (1 / r) * dr(f, ξ)
+end
+
+function dX(f::RBF, ξ::Vector{<:Number}, coord::Integer)
+    @assert coord > 0 "The coordinate must be a positive integer."
+    r = norm(ξ)
+    return r == 0 ? 0 : (ξ[coord]/r)*dr(f,ξ)
 end
 
 struct TPS <: RBF
