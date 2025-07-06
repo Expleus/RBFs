@@ -73,7 +73,7 @@ function dr(t::TPSo2, ξ::Vector{<:Number})
     return r == 0.0 ? 0.0 : r^3*(4*log(r)+1)
 end
 
-function drr(t::TPS, ξ::Vector{<:Number})
+function drr(t::TPSo2, ξ::Vector{<:Number})
     r = norm(ξ)
     return r == 0.0 ? 0.0 : r^2*(12*log(r)+7)
 end
