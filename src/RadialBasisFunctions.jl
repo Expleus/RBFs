@@ -21,9 +21,9 @@ struct TPS <: RBF
     B::Float64
     LaplacianLimit::Float64
     if B > 1
-        TPS() = new(B,-Inf)
+        TPS(B::Float64) = new(B,-Inf)
     else 
-        TPS() = new(B,0)
+        TPS(B::Float64) = new(B,0)
     end
 end
 
