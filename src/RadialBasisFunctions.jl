@@ -18,23 +18,28 @@ function dX(f::RBF, ξ::Vector{<:Number}, coord::Integer)
 end
 
 struct TPS <: RBF
+    B::Float64
     LaplacianLimit::Float64
-    TPS() = new(0)
+    if B > 1
+        TPS() = new(B,-Inf)
+    else 
+        TPS() = new(B,0)
+    end
 end
 
 function (t::TPS)(ξ::Vector{<:Number})
     r = norm(ξ)
-    return r == 0.0 ? 0.0 : r^2 * log(r)
+    return r == 0.0 ? 0.0 : r^(2*t.B) * log(r)
 end
 
 function dr(t::TPS, ξ::Vector{<:Number})
     r = norm(ξ)
-    return r == 0.0 ? 0.0 : 2 * r * log(r) + r
+    return r == 0.0 ? 0.0 : r^(2 * t.B - 1) * (2 * t.B * log(r) + 1) 
 end
 
 function drr(t::TPS, ξ::Vector{<:Number})
     r = norm(ξ)
-    return 2 * log(r) + 3
+    return t.B > 1 ? r^(2 * t.B - 2) * (2 * t.B * (2* t.B - 1) * log(r) + 4 * t.B - 1) : -Inf
 end
 
 struct Gaussiana <: RBF
