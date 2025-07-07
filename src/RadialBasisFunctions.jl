@@ -20,11 +20,7 @@ end
 struct TPS <: RBF
     B::Float64
     LaplacianLimit::Float64
-    if B > 1
-        TPS(B::Float64) = new(B,-Inf)
-    else 
-        TPS(B::Float64) = new(B,0)
-    end
+    TPS(B::Float64) = new(B, B == 1 ? -Inf : 0)
 end
 
 function (t::TPS)(ξ::Vector{<:Number})
