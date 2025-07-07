@@ -2,7 +2,7 @@ module RadialBasisFunctions
 
 using LinearAlgebra
 
-export RBF, TPS, TPSo2, Gaussiana, ∇², dX, dr, drr
+export RBF, TPS, Gaussiana, ∇², dX, dr, drr, dX²
 
 abstract type RBF end
 
@@ -17,9 +17,15 @@ function dX(f::RBF, ξ::Vector{<:Number}, coord::Integer)
     return r == 0 ? 0 : (ξ[coord]/r)*dr(f,ξ)
 end
 
+function dX²(f::RBF, ξ::Vector{<:Number}, coord::Integer)
+    @assert coord > 0 "The coordinate must be a positive integer."
+    r = norm(ξ)
+    return r == 0 ? 0 : (ξ[coord]/r)^2 * drr(f,ξ) + (r^2-ξ[coord]^2)/(r^3) * dr(f,ξ)
+end
+
 struct TPS <: RBF
-    B::Float64
-    LaplacianLimit::Float64
+    B::Real
+    LaplacianLimit::Real
     TPS(B::Float64) = new(B, B == 1 ? -Inf : 0)
 end
 
@@ -39,8 +45,8 @@ function drr(t::TPS, ξ::Vector{<:Number})
 end
 
 struct Gaussiana <: RBF
-    ε::Float64
-    LaplacianLimit::Float64
+    ε::Real
+    LaplacianLimit::Real
     Gaussiana(ε::Float64) = new(ε, -4 * ε^2)
 end
 
@@ -57,26 +63,6 @@ end
 function drr(g::Gaussiana, ξ::Vector{<:Number})
     r = norm(ξ)
     return (1 - 2 * (g.ε * r)^2) * dr(g, ξ) / r
-end
-
-struct TPSo2 <: RBF
-    LaplacianLimit::Float64
-    TPSo2() = new(0)
-end
-
-function (t::TPSo2)(ξ::Vector{<:Number})
-    r = norm(ξ)
-    return r == 0.0 ? 0.0 : r^4 * log(r)
-end
-
-function dr(t::TPSo2, ξ::Vector{<:Number})
-    r = norm(ξ)
-    return r == 0.0 ? 0.0 : r^3*(4*log(r)+1)
-end
-
-function drr(t::TPSo2, ξ::Vector{<:Number})
-    r = norm(ξ)
-    return r == 0.0 ? 0.0 : r^2*(12*log(r)+7)
 end
 
 end # module
