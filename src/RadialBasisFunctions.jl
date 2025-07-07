@@ -26,7 +26,7 @@ end
 struct TPS <: RBF
     B::Real
     LaplacianLimit::Real
-    TPS(B::Float64) = new(B, B == 1 ? -Inf : 0)
+    TPS(B::Real) = new(B, B == 1 ? -Inf : 0)
 end
 
 function (t::TPS)(ξ::Vector{<:Number})
@@ -47,7 +47,7 @@ end
 struct Gaussiana <: RBF
     ε::Real
     LaplacianLimit::Real
-    Gaussiana(ε::Float64) = new(ε, -4 * ε^2)
+    Gaussiana(ε::Real) = new(ε, -4 * ε^2)
 end
 
 function (g::Gaussiana)(ξ::Vector{<:Number})
