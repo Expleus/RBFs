@@ -47,7 +47,7 @@ end
 struct Gaussiana <: RBF
     ε::Real
     LaplacianLimit::Real
-    Gaussiana(ε::Real) = new(ε, -4 * ε^2)
+    Gaussiana(ε::Real) = new(ε, -2 * ε^2)
 end
 
 function (g::Gaussiana)(ξ::Vector{<:Number})
